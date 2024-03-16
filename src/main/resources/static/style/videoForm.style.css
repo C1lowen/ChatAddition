@@ -1,0 +1,211 @@
+body {
+    background-color: #1E1E1E;
+    font-family: "Share Tech Mono", monospace;
+    font-weight: 400;
+    font-style: normal;
+}
+
+button {
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+button img {
+    width: 32px;
+    margin-top: 5px;
+ }
+
+.video-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 50px;
+    width: 100%;
+}
+
+.chat-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat-header img {
+    width: 82px;
+}
+
+.chat-header p {
+    font-size: 28px;
+    color: white;
+}
+
+
+.webcam-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.my-webcam {
+    width: 100%;
+    height: 600px;
+    text-align: center;
+    background-color: #8FC98E;
+}
+
+.your-webcam {
+    width: 100%;
+    height: 600px;
+    text-align: center;
+    background-color: #C98E8F;
+}
+
+.video-items {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.start-items {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start; 
+    gap: 10px; 
+    margin-left: 10px;
+}
+
+.start-items button {
+    background-color: transparent;
+    border: none;
+}
+
+.main-items {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.next-button {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    height: 50px;
+    width: 100px;
+    background-color: #562C9A;
+    font-size: 18px;
+    color: white;
+    border: none;
+}
+
+.stop-button {
+    display: flex;
+    height: 50px;
+    width: 100px;
+    background-color: #F29494;
+    font-size: 18px;
+    color: white;
+    text-align: center;
+    border: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.ban-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 100px;
+    background-color: #F16464;
+    color: white;
+    border: none;
+    font-size: 18px;
+    gap: 10px;
+    border-radius: 10px;
+}
+
+.country-button,
+.orientation-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    height: 50px;
+    width: 150px;
+    background-color: white;
+    font-size: 18px;
+    color: black;
+    border: none;
+}
+
+.country-button p,
+.orientation-button p {
+   margin-top: 22px;
+}
+
+.text-communication{
+    width: 600px;
+    height: auto;
+    background-color: white;
+}
+
+.communication-container img {
+    width: 62px;
+}
+
+.communication-container input {
+    width: 380px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: black;
+    margin-top: 20px;
+    border-top: 1px solid silver;
+}
+
+.mobile-btn {
+    display: none;
+}
+
+@media screen and (max-width: 1280px) {
+
+    .webcam-block {
+        flex-direction: column;
+    }
+  
+    .video-items {
+        gap: 20px;      
+        flex-direction: column;
+    }
+
+    .mobile-btn {
+        display: block;
+    }
+
+    .video-container{
+        width: 100%;
+    }
+
+    .start-items {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .next-button,
+    .stop-button,
+    .country-button,
+    .orientation-button,
+    .text-communication {
+        display: none;
+       
+    }
+
+}

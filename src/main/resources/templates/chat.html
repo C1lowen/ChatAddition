@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+
+        Chat
+
+    </title>
+    <link rel="stylesheet" href="/style/styleAll.css">
+    <link rel="stylesheet" href="/style/chat.style.css">
+    <script src="/js/websockets.js"></script>
+    <script src="/js/chatText.js"></script>
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+
+</head>
+
+<body>
+
+    <div class="chat-block">
+
+        <div class="chat-container">
+
+            <div class="chat-header">
+
+                <div class="logo-block">
+
+                    <img class="logo" src="/img/logo.png" alt="logo">
+
+                    <p>
+
+                        <a class="not-active-tag-a" href="/">Addition</a>
+
+                    </p>
+
+                </div>
+
+                <div class="people-count-block">
+
+                    <img src="/icons/people.svg" alt="people">
+
+                    <p>
+                        100
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="chat-main" id="chat-main">
+
+            </div>
+
+            <div class="chat-footer">
+
+                <button class="ban-btn" type="button">
+
+                    Ban
+
+                </button>
+
+                <div class="chat-input">
+
+                    <button class="chat-button" type="button" onclick="exitChat()">
+
+                        <a href="#">
+
+                            <img src="/icons/exit.svg" alt="exit">
+
+                        </a>
+
+                    </button>
+
+                    <input type="text" id="messageInput">
+
+                    <div class="buttons-input">
+
+                        <button class="chat-button" type="button" id="emojiButton">
+                            <a href="#">
+                                <img src="/icons/smile.svg" alt="smile">
+                            </a>
+                        </button>
+
+                        <button class="chat-button" type="button">
+
+                            <a href="#">
+
+                                <img src="/icons/photo.svg" alt="photo">
+
+                            </a>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <button class="chat-button" type="button" onclick="sendName()">
+
+                    <a href="#">
+
+                        <img src="/icons/send.svg" alt="send">
+
+                    </a>
+
+                </button>
+
+            </div>
+
+            <div id="emojiPicker">
+                <span class="emoji" onclick="insertEmoji('😀')">😀</span>
+                <span class="emoji" onclick="insertEmoji('😃')">😃</span>
+                <span class="emoji" onclick="insertEmoji('😄')">😄</span>
+                <span class="emoji" onclick="insertEmoji('😁')">😁</span>
+                <span class="emoji" onclick="insertEmoji('😆')">😆</span>
+                <span class="emoji" onclick="insertEmoji('😅')">😅</span>
+                <span class="emoji" onclick="insertEmoji('😂')">😂</span>
+                <span class="emoji" onclick="insertEmoji('🤣')">🤣</span>
+                <span class="emoji" onclick="insertEmoji('😊')">😊</span>
+                <span class="emoji" onclick="insertEmoji('😇')">😇</span>
+                <span class="emoji" onclick="insertEmoji('🙂')">🙂</span>
+                <span class="emoji" onclick="insertEmoji('🙃')">🙃</span>
+                <span class="emoji" onclick="insertEmoji('😉')">😉</span>
+                <span class="emoji" onclick="insertEmoji('😌')">😌</span>
+                <span class="emoji" onclick="insertEmoji('😍')">😍</span>
+                <span class="emoji" onclick="insertEmoji('😘')">😘</span>
+                <span class="emoji" onclick="insertEmoji('😗')">😗</span>
+                <span class="emoji" onclick="insertEmoji('😙')">😙</span>
+                <span class="emoji" onclick="insertEmoji('😚')">😚</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

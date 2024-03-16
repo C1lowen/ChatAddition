@@ -1,0 +1,372 @@
+body {
+    background-color: #1E1E1E;
+    font-family: "Share Tech Mono", monospace;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.header {
+   width: 100%;
+   height: 100px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background-color: #44158F;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    width: 120px;
+}
+
+.logo-register-block img {
+    width: 50px;
+}
+
+.logo-text {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: white;
+    text-align: center;
+    width: 80%;
+}
+
+.logo-text p {
+    font-size: 38px;
+    color: white;
+    font-weight: 600;
+}
+
+.main {
+    height: 100%;
+    width: 100%;
+    margin-top: 150px;
+}
+
+.voice-block-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+.voice-blocks-first {
+    display: flex;
+}
+
+.voice-block-first,
+.voice-blocks-second {
+    display: flex;
+}
+
+.voice-block-purple{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 376px;
+    width: 711px;
+    background-color: #44158F;
+}
+
+.voice-block-black {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 376px;
+    width: 711px;
+    background-color: #000000;
+}
+
+.voice-block-red {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 376px;
+    width: 711px;
+    background: linear-gradient(to bottom, #ff1a00 0%,#ff1a00 100%);
+}
+
+.voice-block-redbad {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 376px;
+    width: 711px;
+    background-color: white;
+}
+
+.voice-block-white{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 376px;
+    width: 711px;
+    background-color: #FFFFFF;
+}
+
+.voice-logo,
+.voice-logo-red, 
+.voice-logo-white{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.voice-logo-red p {
+    font-size: 34px;
+    color: red;
+    font-weight: 600;
+}
+
+.voice-logo p {
+    font-size: 38px;
+    color: white;
+    font-weight: 600;
+}
+
+.voice-logo-white p {
+    font-size: 38px;
+    color: black;
+    font-weight: 600;
+}
+
+.second-line{
+    padding-left: 160px;
+}
+
+.main-voice-block{
+    display: flex;
+    height: 400px;
+    width: 911px;
+    background-color: #44158F;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.voice-blocks-third {
+    display: flex;
+    gap: 80px;
+    margin-top: 100px;
+}
+
+.footer {
+    width: 100%;
+    height: auto;
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #44158F;
+ }
+
+ .discord-block img {
+    width: 50px;
+ }
+
+@media screen and (max-width: 1440px) {
+
+    .voice-block-purple,
+    .voice-block-white,
+    .voice-block-black,
+    .voice-block-redbad,
+    .voice-block-red {
+        height: 276px;
+        width: 611px;
+       
+    }
+
+    .main-voice-block{
+        height: 300px;
+        width: 811px;
+    }
+        
+}
+
+@media screen and (max-width: 1280px) {
+
+    .voice-block-purple,
+    .voice-block-white,
+    .voice-block-black,
+    .voice-block-redbad,
+    .voice-block-red {
+        height: 256px;
+        width: 511px 
+    }
+      
+}
+
+@media screen and (max-width: 1024px) {
+
+    .voice-blocks-first,
+    .voice-blocks-second,
+    .voice-blocks-third {
+      flex-direction: column;
+    }
+
+    .voice-block-purple,
+    .voice-block-white,
+    .voice-block-black,
+    .voice-block-redbad,
+    .voice-block-red {
+        height: 156px;
+        width: 311px;  
+    }
+
+    .voice-logo img,
+    .voice-logo-red img,
+    .voice-logo-white img {
+        width: 70px;
+    }
+
+    .logo-register-block img {
+        width: 40px;
+    }
+
+    .discord-block img {
+        width: 30px;
+     }
+
+    .logo-text p {
+        font-size: 22px;
+    }
+
+    .logo-text img {
+        width: 60px;
+    }
+
+    .main-voice-block {
+        height: 200px;
+        width: 611px;
+    }
+
+    .voice-logo p,
+    .voice-logo-red p,
+    .voice-logo-white p {
+        font-size: 22px;
+    }
+      
+}
+
+@media screen and (max-width: 540px) {
+
+    .main-voice-block {
+        width: 411px;
+    }
+      
+}
+
+@media screen and (max-width: 430px) {
+
+    .voice-blocks-first,
+    .voice-blocks-second,
+    .voice-blocks-third {
+      flex-direction: column;
+    }
+
+    .main-voice-block {
+        width: 351px;
+    }
+
+    .voice-logo p,
+    .voice-logo-red p,
+    .voice-logo-white p {
+        font-size: 22px;
+    }
+      
+}
+
+@media screen and (max-width: 425px) {
+
+    .voice-blocks-first,
+    .voice-blocks-second,
+    .voice-blocks-third {
+      flex-direction: column;
+    }
+
+    .main-voice-block {
+        width: 351px;
+    }
+      
+}
+
+
+@media screen and (max-width: 375px) {
+
+    .main-voice-block {
+        width: 321px;
+    }
+      
+}
+
+@media screen and (max-width: 320px) {
+
+    .voice-block-purple,
+    .voice-block-white,
+    .voice-block-black,
+    .voice-block-redbad,
+    .voice-block-red {
+        height: 100px;
+        width: 280px;  
+    }
+
+    .main-voice-block {
+        height: 150px;
+        width: 290px;
+    }
+
+    .voice-logo p,
+    .voice-logo-red p,
+    .voice-logo-white p {
+        font-size: 18px;
+    }
+      
+      
+}
+
+@media screen and (max-width: 280px) {
+
+    .voice-block-purple,
+    .voice-block-white,
+    .voice-block-black,
+    .voice-block-redbad,
+    .voice-block-red {
+        width: 240px;
+    }
+
+    .logo-text p {
+        font-size: 24px;
+    }
+
+    .voice-logo p,
+    .voice-logo-red p,
+    .voice-logo-white p {
+        font-size: 16px;
+    }
+
+    .voice-logo img,
+    .voice-logo-red img,
+    .voice-logo-white img {
+        width: 50px;
+    }
+
+    .discord-block img {
+        width: 30px;
+     }
+
+    .main-voice-block {
+        height: 120px;
+        width: 200px;
+    }
+      
+}
