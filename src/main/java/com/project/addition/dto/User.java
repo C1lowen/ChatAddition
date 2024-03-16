@@ -8,6 +8,6 @@ public class User {
     private String gender;
     private String age;
     private String recipientId;
-    private String roomId;
+    private Room room;
     private SearchUser infoUser;
 }

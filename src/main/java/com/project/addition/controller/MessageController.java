@@ -25,7 +25,7 @@ public class MessageController {
 
         String recipientId = user.getRecipientId();
 
-        String idRoom = user.getRoomId();
+        String idRoom = user.getRoom().getChatId();
 
         simpMessagingTemplate.convertAndSendToUser(idRoom, "/message", message);
     }

@@ -20,8 +20,8 @@ public class SearchUserController {
 
     @GetMapping("/user/chat/{id}")
     public String getUserIdChat(@PathVariable String id) {
-        String idChat = userService.getUser(id).getRoomId();
-        return userService.getUser(id).getRoomId();
+        User user = userService.getUser(id);
+        return user.getRoom().getChatId();
     }
 
     @DeleteMapping("/user/delete/{userId}")

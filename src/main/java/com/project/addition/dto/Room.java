@@ -8,13 +8,13 @@ public class Room {
 
     private String id;
     private String chatId;
-    private String senderId;
-    private String recipientId;
+    private String userOneId;
+    private String userTwoId;
 
 
-    public Room(String chatId, String senderId, String recipientId) {
+    public Room(String chatId, String userOneId, String userTwoId) {
         this.chatId = chatId;
-        this.senderId = senderId;
-        this.recipientId = recipientId;
+        this.userOneId = userOneId;
+        this.userTwoId = userTwoId;
     }
 }

@@ -28,8 +28,11 @@ public class SearchUserService {
 
             String roomId = userId + userCompId;
 
-            user.setRoomId(roomId);
-            userComp.setRoomId(roomId);
+//            user.setRoomId(roomId);
+//            userComp.setRoomId(roomId);
+            Room room = new Room(roomId, userId, userCompId);
+            user.setRoom(room);
+            userComp.setRoom(room);
 
             user.setRecipientId(userCompId);
             userComp.setRecipientId(userId);
