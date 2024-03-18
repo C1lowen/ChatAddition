@@ -13,6 +13,30 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
+function checkActiveChat() {
+    let userId = localStorage.getItem('uniqueId')
+
+    fetch('/chat/active/' + userId, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.text())
+        .then(data => {
+            console.log(data)
+            if(data !== 'true') {
+                exitChat()
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+}
+
+setInterval(checkActiveChat, 500);
+
 function insertEmoji(emoji) {
     document.getElementById('messageInput').value += emoji;
 }
@@ -20,6 +44,7 @@ function insertEmoji(emoji) {
 function exitChat() {
     localStorage.setItem('chatId', '');
     deleteInfoUserServer()
+    disconnect()
     window.location.href = '/'
 
 }

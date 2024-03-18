@@ -11,13 +11,24 @@ public class RoomService {
 
     private final Map<String, Room> roomMap = new HashMap<>();
 
-    public String getChatId(String senderId, String recipientId) {
-        String chatId = senderId + recipientId;
-        roomMap.computeIfAbsent(chatId, i -> new Room(i, senderId, recipientId));
-        return chatId;
+//    public String getChatId(String senderId, String recipientId) {
+//        String chatId = senderId + recipientId;
+//        roomMap.computeIfAbsent(chatId, i -> new Room(i, senderId, recipientId));
+//        return chatId;
+//    }
+
+    public void saveChatId(String chatId, Room room) {
+        roomMap.put(chatId, room);
     }
 
+    public void deleteChatId(String chatId) {
+       roomMap.remove(chatId);
+    }
 
+    public Boolean findChat(String chatId) {
+        Room room = roomMap.get(chatId);
+        return roomMap.get(chatId) != null;
+    }
 
 
 }

@@ -10,23 +10,29 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import java.util.Optional;
+
 @Controller
 @RequiredArgsConstructor
 public class MessageController {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final UserService userService;
-    private final RoomService roomService;
+
 
 
     @MessageMapping("/hello")
     public void greet(@Payload Message message) throws InterruptedException {
-        User user = userService.getUser(message.getSession());
+        Optional<User> userOptional = userService.getUser(message.getSession());
 
-        String recipientId = user.getRecipientId();
+        if(userOptional.isPresent()) {
+            User user = userOptional.get();
 
-        String idRoom = user.getRoom().getChatId();
+//            String recipientId = user.getRecipientId();
 
-        simpMessagingTemplate.convertAndSendToUser(idRoom, "/message", message);
+            String idRoom = user.getRoom().getChatId();
+
+            simpMessagingTemplate.convertAndSendToUser(idRoom, "/message", message);
+        }
     }
 }

@@ -16,6 +16,8 @@ public class SearchUserService {
 
     private final List<User> queue = new ArrayList<>();
 
+    private final RoomService roomService;
+
     private final UserService userService;
 
     public String addUserQueue(User user) {
@@ -34,8 +36,10 @@ public class SearchUserService {
             user.setRoom(room);
             userComp.setRoom(room);
 
-            user.setRecipientId(userCompId);
-            userComp.setRecipientId(userId);
+            roomService.saveChatId(roomId, room);
+
+//            user.setRecipientId(userCompId);
+//            userComp.setRecipientId(userId);
 
             userService.save(userId, user);
             userService.save(userCompId, userComp);
@@ -62,10 +66,10 @@ public class SearchUserService {
 
     public Optional<User> compareUser(User user) {
         return queue.stream()
-                .filter(userQueue -> userQueue.getInfoUser().getCity().equals(user.getInfoUser().getCity()))
-                .filter(userQueue -> userQueue.getInfoUser().getCountry().equals(user.getInfoUser().getCountry()))
-                .filter(userQueue -> user.getInfoUser().getSearchAge().contains(userQueue.getAge()) && userQueue.getInfoUser().getSearchAge().contains(user.getAge()))
-                .filter(userQueue -> user.getInfoUser().getSearchGender().contains(userQueue.getGender()) && userQueue.getInfoUser().getSearchGender().contains(user.getGender()))
+                .filter(userQueue -> userQueue.getInfoUser().getCity().equals(user.getInfoUser().getCity())
+                        && userQueue.getInfoUser().getCountry().equals(user.getInfoUser().getCountry())
+                        && (user.getInfoUser().getSearchAge().contains(userQueue.getAge()) && userQueue.getInfoUser().getSearchAge().contains(user.getAge()))
+                        && (user.getInfoUser().getSearchGender().contains(userQueue.getGender()) && userQueue.getInfoUser().getSearchGender().contains(user.getGender())))
                 .findFirst();
     }
 }

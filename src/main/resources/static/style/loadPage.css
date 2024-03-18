@@ -1,0 +1,81 @@
+
+
+.container {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 98vh;
+    width: 98vw;
+    background-color: #1E1E1E;
+}
+
+.loader-container {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.loader {
+    width: 120px;
+    height: 120px;
+    margin: 20px auto;
+    animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(3000deg);
+    }
+}
+
+.loader circle {
+    stroke-dasharray: 200;
+    stroke-dashoffset: 150;
+    color: rgb(61, 149, 165);
+    animation: dash 2s linear infinite;
+}
+
+@keyframes dash {
+    0% {
+        stroke-dashoffset: 150;
+    }
+    50% {
+        stroke-dashoffset: 0;
+    }
+    100% {
+        stroke-dashoffset: -150;
+    }
+}
+
+.loader-text {
+    font-size: 20px; /* Increase font size slightly */
+    margin-bottom: 10px;
+    color: #777;
+    font-family: 'Montserrat', sans-serif; /* Add a modern font */
+}
+
+.cancel-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none; /* Remove border */
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #3498db; /* Change background color */
+    color: #fff; /* Change text color to white */
+    font-family: 'Montserrat', sans-serif; /* Add a modern font */
+    transition: background-color 0.2s ease-in-out; /* Add hover effect */
+}
+
+.cancel-button:hover {
+    background-color: #2980b9; /* Change background color on hover */
+}

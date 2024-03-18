@@ -120,22 +120,6 @@ function getChatId(userId) {
 }
 
 
-// const connect = () => {
-//     const Stomp = require("stompjs");
-//     let SockJS = require("sockjs-client");
-//     SockJS = new SockJS("http://localhost:8080/gs-guide-websocket");
-//     stompClient = Stomp.over(SockJS);
-//     stompClient.connect({}, onConnected, onError);
-// };
-//
-// const onConnected = () => {
-//     console.log("connected");
-//
-//     stompClient.subscribe(
-//         "/topic/greetings",
-//         onMessageReceived
-//     );
-// };
 
 function connect() {
     let socket = new SockJS('/stomp-endpoint');
@@ -148,7 +132,7 @@ function connect() {
         });
     });
 }
-// $("#messageInput").val();
+
 function sendName() {
     let messageInput = document.getElementById('messageInput');
 
@@ -183,6 +167,12 @@ const onMessageReceived = (payload) => {
     divElem.prepend(pElem);
 };
 
+function disconnect() {
+    if (stompClient !== null) {
+        stompClient.disconnect();
+        console.log("Disconnected");
+    }
+}
 
 // if (message.session === localStorage.getItem('uniqueSession')) {
 //     userName = ' Ви:'
@@ -208,4 +198,21 @@ const onMessageReceived = (payload) => {
 //
 //         stompClient.send("/app/hello", {}, JSON.stringify(message));
 //     }
+// };
+
+// const connect = () => {
+//     const Stomp = require("stompjs");
+//     let SockJS = require("sockjs-client");
+//     SockJS = new SockJS("http://localhost:8080/gs-guide-websocket");
+//     stompClient = Stomp.over(SockJS);
+//     stompClient.connect({}, onConnected, onError);
+// };
+//
+// const onConnected = () => {
+//     console.log("connected");
+//
+//     stompClient.subscribe(
+//         "/topic/greetings",
+//         onMessageReceived
+//     );
 // };
