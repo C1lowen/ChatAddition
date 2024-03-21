@@ -3,6 +3,7 @@ package com.project.addition.controller;
 import com.project.addition.dto.User;
 import com.project.addition.service.RoomService;
 import com.project.addition.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,8 @@ public class MainController {
 
 
     @GetMapping("/")
-    public String homePage() {
+    public String homePage(HttpServletRequest request) {
+        String session = request.getSession().getId();
         return "index.html";
     }
 

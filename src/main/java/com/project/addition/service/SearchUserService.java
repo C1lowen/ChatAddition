@@ -1,27 +1,28 @@
 package com.project.addition.service;
 
-import com.project.addition.dto.Room;
+import com.project.addition.dto.RoomDTO;
 import com.project.addition.dto.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class SearchUserService {
 
-    private final List<User> queue = new ArrayList<>();
+    private final List<User> queue = Collections.synchronizedList(new ArrayList<>());
 
     private final RoomService roomService;
 
     private final UserService userService;
 
     public String addUserQueue(User user) {
+
+        queue.removeIf(userQueue -> userQueue.getId().equals(user.getId()));
+
         Optional<User> userCompOptional = compareUser(user);
+
         if (userCompOptional.isPresent()) {
             User userComp = userCompOptional.get();
 
@@ -30,26 +31,19 @@ public class SearchUserService {
 
             String roomId = userId + userCompId;
 
-//            user.setRoomId(roomId);
-//            userComp.setRoomId(roomId);
-            Room room = new Room(roomId, userId, userCompId);
+            RoomDTO room = new RoomDTO(roomId, userId, userCompId);
             user.setRoom(room);
             userComp.setRoom(room);
 
             roomService.saveChatId(roomId, room);
-
-//            user.setRecipientId(userCompId);
-//            userComp.setRecipientId(userId);
 
             userService.save(userId, user);
             userService.save(userCompId, userComp);
 
             queue.removeAll(List.of(user, userComp));
 
-            return userCompId;
+            return roomId;
         } else {
-            queue.removeIf(userQueue -> userQueue.getId().equals(user.getId()));
-
             addToQueue(user);
 
             return null;
@@ -58,6 +52,22 @@ public class SearchUserService {
 
     private void removeFromQueue(User user) {
         queue.remove(user);
+    }
+
+    public void deleteQueueByUserId(String userId) {
+        Optional<User> currentUser = queue.stream()
+                .filter(user -> user.getId().equals(userId))
+                .findFirst();
+
+        currentUser.ifPresent(queue::remove);
+    }
+
+    public Boolean checkUserInSearch(String userId) {
+        Optional<User> currentUser = queue.stream()
+                .filter(user -> user.getId().equals(userId))
+                .findFirst();
+
+        return currentUser.isPresent();
     }
 
     private void addToQueue(User user) {

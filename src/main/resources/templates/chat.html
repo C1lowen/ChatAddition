@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="/style/chat.style.css">
     <script src="/js/websockets.js"></script>
     <script src="/js/chatText.js"></script>
+    <script src="/js/checkRoomActive.js"></script>
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
@@ -56,12 +57,11 @@
             </div>
 
             <div class="chat-main" id="chat-main">
-
             </div>
 
             <div class="chat-footer">
 
-                <button class="ban-btn" type="button">
+                <button class="ban-btn" type="button" id="ban-btn" onclick="bannedUserClick()">
 
                     Ban
 
@@ -69,7 +69,7 @@
 
                 <div class="chat-input">
 
-                    <button class="chat-button" type="button" onclick="exitChat()">
+                    <button class="chat-button" type="button" onclick="disconnectChatAll()">
 
                         <a href="#">
 
@@ -103,7 +103,7 @@
 
                 </div>
 
-                <button class="chat-button" type="button" onclick="sendName()">
+                <button class="chat-button" id="chat-button" type="button" onclick="sendName()">
 
                     <a href="#">
 
@@ -115,7 +115,7 @@
 
             </div>
 
-            <div id="emojiPicker">
+            <div id="emojiPicker" >
                 <span class="emoji" onclick="insertEmoji('😀')">😀</span>
                 <span class="emoji" onclick="insertEmoji('😃')">😃</span>
                 <span class="emoji" onclick="insertEmoji('😄')">😄</span>

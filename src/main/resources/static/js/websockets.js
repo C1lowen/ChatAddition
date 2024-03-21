@@ -1,93 +1,8 @@
-// const stompClient = new StompJs.Client({
-//     brokerURL: 'ws://localhost:8080/gs-guide-websocket'
-// });
-//
-// stompClient.onConnect = (frame) => {
-//     setConnected(true);
-//     console.log('Connected: ' + frame);
-//     stompClient.subscribe('/topic/greetings', (greeting) => {
-//         showGreeting(JSON.parse(greeting.body).content);
-//     });
-// };
-//
-// stompClient.onWebSocketError = (error) => {
-//     console.error('Error with websocket', error);
-// };
-//
-// stompClient.onStompError = (frame) => {
-//     console.error('Broker reported error: ' + frame.headers['message']);
-//     console.error('Additional details: ' + frame.body);
-// };
-//
-// function setConnected(connected) {
-//     $("#connect").prop("disabled", connected);
-//     $("#disconnect").prop("disabled", !connected);
-//     if (connected) {
-//         $("#conversation").show();
-//     }
-//     else {
-//         $("#conversation").hide();
-//     }
-//     $("#greetings").html("");
-// }
-//
-// function connect() {
-//     stompClient.activate();
-// }
-//
-// function disconnect() {
-//     stompClient.deactivate();
-//     setConnected(false);
-//     console.log("Disconnected");
-// }
-//
-// function sendName() {
-//     stompClient.publish({
-//         destination: "/app/hello",
-//         body: JSON.stringify({'name': $("#name").val()})
-//     });
-// }
-//
-// function showGreeting(message) {
-//     $("#greetings").append("<tr><td>" + message + "</td></tr>");
-// }
-//
-// $(function () {
-//     $("form").on('submit', (e) => e.preventDefault());
-//     $( "#connect" ).click(() => connect());
-//     $( "#disconnect" ).click(() => disconnect());
-//     $( "#send" ).click(() => sendName());
-// });
-
-// ws = new WebSocket("ws://localhost:8080/pong")
-//
-// ws.onopen = function () {
-//     action('open connerction');
-// }
-//
-// ws.onmessage = function (ev) {
-//     action(ev.data);
-// }
-//
-// function action(message) {
-//     let output = document.getElementById('chat-main')
-//     let newP = document.createElement('p');
-//     newP.appendChild(document.createTextNode(message));
-//     output.appendChild(newP);
-// }
-//
-// function ping() {
-//     let message = document.getElementById('messageInput')
-//     action('send:' + message)
-//     ws.send(message);
-// }
-
-
 let stompClient = null;
 
 
 window.addEventListener('load', () => {
-    connect(); // вызываем connect после загрузки страницы
+     // вызываем connect после загрузки страницы
 
     document.addEventListener('keydown', function(event) {
         if (event.keyCode === 13) {
@@ -96,12 +11,13 @@ window.addEventListener('load', () => {
         }
     });
 
-    getChatId(localStorage.getItem('uniqueId'))
+    setChatId(localStorage.getItem('uniqueId'))
 });
 
-function getChatId(userId) {
+
+function setChatId(userId) {
     let chatId = localStorage.getItem('chatId');
-    if(chatId === '' || chatId === null) {
+    if (chatId === '' || chatId === null) {
         fetch('/user/chat/' + userId, {
             method: 'GET',
             headers: {
@@ -112,19 +28,80 @@ function getChatId(userId) {
             .then(data => {
                 console.log(data)
                 localStorage.setItem('chatId', data)
+                checkActiveChatId()
+                connect()
+                // getOldMessages()
             })
             .catch(error => {
                 console.error('Ошибка:', error);
             });
-    }
+        }else {
+            checkActiveChatId()
+             connect()
+        // getOldMessages()
+        }
+
 }
 
+function getOldMessages() {
+    let divElem = document.getElementById('chat-main');
+    let chatId = localStorage.getItem('chatId')
+    fetch('/get/message/' + chatId, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            generateMessageHTML(data)
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+}
 
+function generateMessageHTML(messages) {
+
+    let userId = localStorage.getItem('uniqueId');
+    const chatMain = document.getElementById('chat-main');
+
+    // Очищаем содержимое контейнера
+    chatMain.innerHTML = '';
+
+    // Проходимся по каждому сообщению в полученном списке
+    messages.forEach(message => {
+        let classP = (userId === message.session) ? 'my-message' : 'your-message';
+        const messageElement = document.createElement('p');
+        messageElement.classList.add(classP); // Добавляем класс для стилизации
+
+        let classSpan = (userId === message.session) ? 'purple' : 'red';
+        const userSpan = document.createElement('span');
+        userSpan.classList.add(classSpan);
+
+        // Устанавливаем имя пользователя
+        userSpan.textContent = (userId === message.session) ? ' Ви:' : ' Співрозмовник:';
+
+        const textNode = document.createTextNode(' ' + message.message);
+
+        // Добавляем span'ы в элемент сообщения
+        messageElement.appendChild(userSpan);
+        messageElement.appendChild(textNode)
+
+        // Добавляем элемент сообщения в контейнер
+        chatMain.prepend(messageElement);
+    });
+}
 
 function connect() {
+
+    let userId = localStorage.getItem('uniqueId')
+    let chatId = localStorage.getItem('chatId')
+
     let socket = new SockJS('/stomp-endpoint');
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
+    console.log('----------!! ' + chatId + ' --lollll')
+    stompClient.connect({userId, chatId}, function (frame) {
         console.log('Connected: ' + frame);
         let currentUserId = localStorage.getItem('uniqueId');
         stompClient.subscribe('/user/'+ localStorage.getItem('chatId') +'/message', function (greeting) {
@@ -133,6 +110,8 @@ function connect() {
     });
 }
 
+
+
 function sendName() {
     let messageInput = document.getElementById('messageInput');
 
@@ -140,16 +119,32 @@ function sendName() {
 
     if (message.trim() !== "") {
         messageInput.value = ''
-        stompClient.send("/app/hello", {}, JSON.stringify({'message': message, 'session': localStorage.getItem('uniqueId')}));
+        stompClient.send("/app/chat/" + localStorage.getItem('chatId'), {}, JSON.stringify({'message': message, 'session': localStorage.getItem('uniqueId'), 'action': 'MESSAGE'}) );
+    }
+}
+
+function disconnectChatAll() {
+    let confirmation = confirm("Ви впевнені, що хочете вийти? Ви більше не зможете повернутися до цього листування!");
+    if(confirmation){
+         stompClient.send("/app/chat/" + localStorage.getItem('chatId'), {}, JSON.stringify({'message': '', 'session': localStorage.getItem('uniqueId'), 'action': 'DELETE'}) );
     }
 }
 
 const onMessageReceived = (payload) => {
     const message = JSON.parse(payload.body);
+
     let spanElem = document.createElement('span');
     let divElem = document.getElementById('chat-main');
     let pElem = document.createElement('p');
 
+    if(message.action === 'DELETE') {
+        disabledDisconnectChat(message)
+        return
+    } else if (message.action === 'BANNED') {
+        bannedUserInChat(message)
+        return;
+    }
+    
     let userName = null;
     if (message.session === localStorage.getItem('uniqueId')){
         userName = ' Ви:'
@@ -167,52 +162,59 @@ const onMessageReceived = (payload) => {
     divElem.prepend(pElem);
 };
 
+function disabledDisconnectChat(message) {
+    let divElem = document.getElementById('chat-main');
+    let pElem = document.createElement('p');
+    let emoji = document.getElementById('emojiPicker')
+    let buttonSend = document.getElementById('chat-button');
+    let messageInput = document.getElementById('messageInput');
+    let emojiButton = document.getElementById('emojiButton')
+
+    pElem.className = 'my-message';
+    if (message.session === localStorage.getItem('uniqueId')){
+        pElem.textContent = 'Ви вирішили закінчити бесіду'
+    }else {
+        pElem.textContent = 'Співрозмовник вирішив закінчити бесіду'
+    }
+    emojiButton.disabled = true
+    emoji.style.display= 'none';
+    buttonSend.disabled = true;
+    messageInput.disabled = true;
+    divElem.prepend(pElem)
+    localStorage.setItem('chatId', '');
+    // deleteInfoUserServer()
+    disconnect()
+}
+
+function bannedUserInChat(message) {
+    let divElem = document.getElementById('chat-main');
+    let pElem = document.createElement('p');
+    let emoji = document.getElementById('emojiPicker')
+    let buttonSend = document.getElementById('chat-button');
+    let messageInput = document.getElementById('messageInput');
+    let emojiButton = document.getElementById('emojiButton')
+
+    pElem.className = 'my-message';
+    if (message.session === localStorage.getItem('uniqueId')){
+        pElem.textContent = 'Ви заблокували користувача на 30 хвилин'
+    }else {
+        pElem.textContent = 'Співрозмовник заблокував вас. Ви не можете спілкуватись 30 хвилин'
+    }
+    emojiButton.disabled = true
+    emoji.style.display= 'none';
+    buttonSend.disabled = true;
+    messageInput.disabled = true;
+    divElem.prepend(pElem)
+    localStorage.setItem('chatId', '');
+    // deleteInfoUserServer()
+    disconnect()
+}
+
 function disconnect() {
     if (stompClient !== null) {
         stompClient.disconnect();
+        clearInterval(intervalId)
         console.log("Disconnected");
     }
 }
 
-// if (message.session === localStorage.getItem('uniqueSession')) {
-//     userName = ' Ви:'
-// } else {
-//     userName = ' Співрозмовник:'
-// }
-
-// <p class="my-message">
-//
-//     <span class="purple"> Ви:</span> Привіт !
-//
-// </p>
-
-// const onError = (error) => {
-//     console.error("Error:", error);
-// };
-//
-// const sendMessage = (msg) => {
-//     if (msg.trim() !== "") {
-//         const message = {
-//             name: msg
-//         };
-//
-//         stompClient.send("/app/hello", {}, JSON.stringify(message));
-//     }
-// };
-
-// const connect = () => {
-//     const Stomp = require("stompjs");
-//     let SockJS = require("sockjs-client");
-//     SockJS = new SockJS("http://localhost:8080/gs-guide-websocket");
-//     stompClient = Stomp.over(SockJS);
-//     stompClient.connect({}, onConnected, onError);
-// };
-//
-// const onConnected = () => {
-//     console.log("connected");
-//
-//     stompClient.subscribe(
-//         "/topic/greetings",
-//         onMessageReceived
-//     );
-// };

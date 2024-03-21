@@ -2,9 +2,8 @@ package com.project.addition.dto;
 
 import lombok.Data;
 
-import java.util.Map;
 @Data
-public class Room {
+public class RoomDTO {
 
     private String id;
     private String chatId;
@@ -12,7 +11,7 @@ public class Room {
     private String userTwoId;
 
 
-    public Room(String chatId, String userOneId, String userTwoId) {
+    public RoomDTO(String chatId, String userOneId, String userTwoId) {
         this.chatId = chatId;
         this.userOneId = userOneId;
         this.userTwoId = userTwoId;

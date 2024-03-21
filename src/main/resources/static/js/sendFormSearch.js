@@ -1,4 +1,4 @@
-function validateForm() {
+async function validateForm() {
     let genderUser = getGenderUser();
     let ageUser = getAgeUser();
     let gendersSearchUser = getGenderSearchUser();
@@ -6,35 +6,52 @@ function validateForm() {
     let country = getCountry();
     let city = getCity();
 
-    // console.log(genderUser)
-    // console.log(ageUser)
-    // console.log(gendersSearchUser)
-    // console.log(agesSearchUser)
-    // console.log(country)
-    // console.log(city)
-
     if(genderUser === '' || ageUser === ''
         || !gendersSearchUser.length || !agesSearchUser.length
         || country === '' || city === '') {
         alert("Виберіть варіант для пошуку в кожному блоці")
         return
     }
-    formSearchUser()
-    let objectUser =  {
-        id: localStorage.getItem('uniqueId'),
-        gender: genderUser,
-        age: ageUser,
-        infoUser: {
-            searchGender: gendersSearchUser,
-            searchAge: agesSearchUser,
-            country: country,
-            city: city
-        }
+    let isNotBanned = await checkBanned();
+    if (isNotBanned) {
+        formSearchUser();
+        let objectUser = {
+            id: localStorage.getItem('uniqueId'),
+            gender: genderUser,
+            age: ageUser,
+            infoUser: {
+                searchGender: gendersSearchUser,
+                searchAge: agesSearchUser,
+                country: country,
+                city: city
+            }
+        };
+        console.log(objectUser);
+        localStorage.setItem('chatId', '');
+        sendInfoServer(objectUser);
     }
+}
 
-    console.log(objectUser)
-
-    sendInfoServer(objectUser)
+function checkBanned() {
+    let userId = localStorage.getItem('uniqueId');
+    return fetch('/user/check/banned/' + userId, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.text())
+        .then(data => {
+            if (data !== '-1') {
+                alert('Вас заблоковано! Бан пройде через ' + data + ' хвилин');
+                return false;
+            }
+            return true;
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            return false;
+        });
 }
 
 function formSearchUser() {
@@ -66,15 +83,19 @@ function sendInfoServer(user) {
     })
         .then(response => response.text())
         .then(data => {
-            console.log(data)
+            if(data !== '') {
+                window.location.href = '/textchat'
+            }
         })
         .catch(error => {
             console.error('Ошибка:', error);
         });
 }
 
+
+
 function getGenderUser() {
-    let buttons = document.querySelectorAll('.looking-age-block button');
+    let buttons = document.querySelectorAll('.orientation-block button');
 
     let activeButtonInputValue = '';
 
@@ -105,7 +126,7 @@ function getAgeUser() {
 }
 
 function getGenderSearchUser() {
-    var activeButtons = document.querySelectorAll('.orientation-block button');
+    var activeButtons = document.querySelectorAll('.looking-age-block button');
     var texts = [];
     activeButtons.forEach(function(button) {
         if (button.classList.contains('active')) {

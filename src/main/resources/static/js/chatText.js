@@ -11,13 +11,43 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         event.stopPropagation(); // Остановка всплытия события, чтобы оно не достигло document
     });
+
 });
 
+window.addEventListener('beforeunload', function (event) {
+    // Текст сообщения
+    var message = '[eq[eq[eq]';
 
-function checkActiveChat() {
-    let userId = localStorage.getItem('uniqueId')
+    // Отображение confirm-окна
+    event.returnValue = confirm(message);
+});
 
-    fetch('/chat/active/' + userId, {
+function bannedUserClick() {
+    let userId = localStorage.getItem('uniqueId');
+
+    fetch('/user/set/banned', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: userId
+    })
+        .then(response => response.text())
+        .then(data => {
+            stompClient.send("/app/chat/" + localStorage.getItem('chatId'), {}, JSON.stringify({'message': '', 'session': localStorage.getItem('uniqueId'), 'action': 'BANNED'}) );
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+}
+
+function checkActiveChatId() {
+    let userId = localStorage.getItem('uniqueId');
+    let chatId = localStorage.getItem('chatId')
+    // if(chatId === '' || chatId === null || userId === '' || userId === null) {
+    //     window.location.href = '/'
+    // }
+    fetch('/user/active/' + userId +'/' + chatId , {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -27,7 +57,8 @@ function checkActiveChat() {
         .then(data => {
             console.log(data)
             if(data !== 'true') {
-                exitChat()
+                // localStorage.setItem('chatId', '')
+                window.location.href = '/'
             }
         })
         .catch(error => {
@@ -35,7 +66,28 @@ function checkActiveChat() {
         });
 }
 
-setInterval(checkActiveChat, 500);
+// function checkActiveChat() {
+//     let userId = localStorage.getItem('uniqueId')
+//
+//     fetch('/chat/active/' + userId, {
+//         method: 'GET',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         }
+//     })
+//         .then(response => response.text())
+//         .then(data => {
+//             console.log(data)
+//             if(data !== 'true') {
+//                 exitChat()
+//             }
+//         })
+//         .catch(error => {
+//             console.error('Ошибка:', error);
+//         });
+// }
+
+// setInterval(checkActiveChat, 500);
 
 function insertEmoji(emoji) {
     document.getElementById('messageInput').value += emoji;
@@ -46,7 +98,6 @@ function exitChat() {
     deleteInfoUserServer()
     disconnect()
     window.location.href = '/'
-
 }
 
 function deleteInfoUserServer() {
@@ -67,3 +118,4 @@ function deleteInfoUserServer() {
         });
 
 }
+

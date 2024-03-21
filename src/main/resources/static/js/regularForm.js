@@ -1,3 +1,26 @@
+window.addEventListener('load', () => {
+    checkUserInSearch()
+});
+
+function checkUserInSearch() {
+    let userId = localStorage.getItem('uniqueId');
+    fetch('/user/check/search/' + userId, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.text())
+        .then(data => {
+            if(data === 'true') {
+                formSearchUser()
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+}
+
 
 function toggleButton(buttonId) {
 
