@@ -10,4 +10,5 @@ public class User {
 //    private String recipientId;
     private RoomDTO room;
     private SearchUser infoUser;
+    private TypeRoom typeRoom;
 }

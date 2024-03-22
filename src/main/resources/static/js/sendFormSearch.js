@@ -1,4 +1,4 @@
-async function validateForm() {
+async function validateForm(typeRoom) {
     let genderUser = getGenderUser();
     let ageUser = getAgeUser();
     let gendersSearchUser = getGenderSearchUser();
@@ -14,7 +14,7 @@ async function validateForm() {
     }
     let isNotBanned = await checkBanned();
     if (isNotBanned) {
-        formSearchUser();
+        typeRoom === 'DEFAULT' ? formSearchUser() : formSearchUserAdult()
         let objectUser = {
             id: localStorage.getItem('uniqueId'),
             gender: genderUser,
@@ -24,7 +24,8 @@ async function validateForm() {
                 searchAge: agesSearchUser,
                 country: country,
                 city: city
-            }
+            },
+            typeRoom: typeRoom
         };
         console.log(objectUser);
         localStorage.setItem('chatId', '');
@@ -69,6 +70,25 @@ function formSearchUser() {
         '        </div>\n' +
         '        <p class="loader-text">Пошук партнера...</p>\n' +
         '        <button class="cancel-button" onclick="cancelSearch()">Скасувати пошук</button>\n' +
+        '    </div>\n' +
+        '</div>'
+}
+
+function formSearchUserAdult() {
+    let mainContent = document.getElementById('main-content');
+    mainContent.innerHTML = '';
+    console.log('hello')
+    mainContent.innerHTML = '<div class="container">\n' +
+        '    <div class="loader-container">\n' +
+        '        <div class="loader">\n' +
+        '            <svg viewBox="0 0 100 100">\n' +
+        '                <circle cx="50" cy="50" r="40" stroke="currentColor" stroke-width="10" fill="none" />\n' +
+        '                <circle cx="50" cy="50" r="30" stroke="currentColor" stroke-width="10" fill="none" />\n' +
+        '                <circle cx="50" cy="50" r="20" stroke="currentColor" stroke-width="10" fill="none" />\n' +
+        '            </svg>\n' +
+        '        </div>\n' +
+        '        <p class="loader-text">Пошук партнера...</p>\n' +
+        '        <button class="cancel-button" onclick="cancelSearchAdult()">Скасувати пошук</button>\n' +
         '    </div>\n' +
         '</div>'
 }

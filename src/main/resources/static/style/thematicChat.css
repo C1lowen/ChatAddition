@@ -1,0 +1,68 @@
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4); /* Затемнение заднего фона */
+}
+
+
+.modal-content {
+    background-color: #444;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Кнопка закрытия */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+}
+
+.close:hover,
+.close:focus {
+    color: white; /* Измененный цвет при наведении */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Заголовок */
+.modal-content h2 {
+    margin-top: 0;
+    color: white; /* Белый цвет текста заголовка */
+}
+
+/* Поле ввода и кнопка */
+#chatName {
+    width: calc(100% - 10px); /* Ширина поля ввода */
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Roboto', sans-serif; /* Подключение красивого шрифта */
+}
+
+button[type="submit"] {
+    background-color: #800080; /* Фиолетовый цвет кнопки */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif; /* Подключение красивого шрифта */
+}
+
+button[type="submit"]:hover {
+    background-color: #6a006a; /* Измененный цвет кнопки при наведении */
+}

@@ -42,6 +42,7 @@ public class SearchUserService {
 
             queue.removeAll(List.of(user, userComp));
 
+
             return roomId;
         } else {
             addToQueue(user);
@@ -76,7 +77,8 @@ public class SearchUserService {
 
     public Optional<User> compareUser(User user) {
         return queue.stream()
-                .filter(userQueue -> userQueue.getInfoUser().getCity().equals(user.getInfoUser().getCity())
+                .filter(userQueue -> user.getTypeRoom() == userQueue.getTypeRoom()
+                        && userQueue.getInfoUser().getCity().equals(user.getInfoUser().getCity())
                         && userQueue.getInfoUser().getCountry().equals(user.getInfoUser().getCountry())
                         && (user.getInfoUser().getSearchAge().contains(userQueue.getAge()) && userQueue.getInfoUser().getSearchAge().contains(user.getAge()))
                         && (user.getInfoUser().getSearchGender().contains(userQueue.getGender()) && userQueue.getInfoUser().getSearchGender().contains(user.getGender())))

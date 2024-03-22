@@ -71,7 +71,7 @@ public class MessageController {
             User user = userOptional.get();
             chatId = user.getRoom().getChatId();
         }
-
+        
         Map<String, String> setsInfoUser = new ConcurrentHashMap<>();
 
         setsInfoUser.put("chatId", chatId);
