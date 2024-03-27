@@ -1,10 +1,13 @@
 package com.project.addition.controller;
 
 import com.project.addition.dto.Message;
+import com.project.addition.dto.ResponseActiveChat;
+import com.project.addition.dto.RoomThematic;
 import com.project.addition.dto.User;
 import com.project.addition.model.Room;
 import com.project.addition.service.RoomService;
 import com.project.addition.service.SearchUserService;
+import com.project.addition.service.ThematicChatService;
 import com.project.addition.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +22,7 @@ public class SearchUserController {
     private final SearchUserService searchUserService;
     private final UserService userService;
     private final RoomService roomService;
+    private final ThematicChatService thematicChatService;
 
     @PostMapping("/user/add/queue")
     public String addUserQueue(@RequestBody User user) {
@@ -50,7 +54,7 @@ public class SearchUserController {
     }
 
     @GetMapping("/user/active/{userId}/{chatId}")
-    public Boolean checkActiveUser(@PathVariable String userId, @PathVariable String chatId) {
+    public ResponseActiveChat checkActiveUser(@PathVariable String userId, @PathVariable String chatId) {
         return roomService.findUserByChatId(chatId, userId);
     }
 
@@ -77,13 +81,25 @@ public class SearchUserController {
     }
 
     @GetMapping("/user/check/banned/{userId}")
-    public Long checkBanned(@PathVariable String userId) {
+    public String checkBanned(@PathVariable String userId) {
         return userService.isBanned(userId);
     }
 
     @PostMapping("/user/set/banned")
-    public void setBannedUser(@RequestBody String userId) {
-        userService.setBannedId(userId);
+    public Boolean setBannedUser(@RequestBody String userId) {
+        return userService.setBannedId(userId);
+    }
+
+    @PostMapping("/user/save/thematic")
+    public Boolean saveUserThematicChat(@RequestBody User user) {
+        RoomThematic roomThematic = thematicChatService.getRoomThematic(user.getRoom().getChatId());
+        List<String> users = roomThematic.getUsers();
+        if(users != null && users.size() < 2) {
+            roomThematic.getUsers().add(user.getId());
+            userService.save(user.getId(), user);
+            return true;
+        }
+        return false;
     }
 
 //    @PostMapping("/save/redis")

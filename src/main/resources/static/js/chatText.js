@@ -34,7 +34,13 @@ function bannedUserClick() {
     })
         .then(response => response.text())
         .then(data => {
-            stompClient.send("/app/chat/" + localStorage.getItem('chatId'), {}, JSON.stringify({'message': '', 'session': localStorage.getItem('uniqueId'), 'action': 'BANNED'}) );
+            if(data === 'true') {
+                stompClient.send("/app/chat/" + localStorage.getItem('chatId'), {}, JSON.stringify({
+                    'message': '',
+                    'session': localStorage.getItem('uniqueId'),
+                    'action': 'BANNED'
+                }));
+            }
         })
         .catch(error => {
             console.error('Ошибка:', error);
@@ -44,19 +50,19 @@ function bannedUserClick() {
 function checkActiveChatId() {
     let userId = localStorage.getItem('uniqueId');
     let chatId = localStorage.getItem('chatId')
-    // if(chatId === '' || chatId === null || userId === '' || userId === null) {
-    //     window.location.href = '/'
-    // }
-    fetch('/user/active/' + userId +'/' + chatId , {
+    if(chatId === '' || chatId === null || userId === '' || userId === null) {
+        window.location.href = '/'
+    }
+    fetch('/user/active/' + userId + '/' + chatId , {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
         }
     })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(data => {
             console.log(data)
-            if(data !== 'true') {
+            if(data.active === false) {
                 // localStorage.setItem('chatId', '')
                 window.location.href = '/'
             }

@@ -1,5 +1,5 @@
 package com.project.addition.dto;
 
 public enum ActionMessage {
-    MESSAGE, DELETE, BANNED
+    MESSAGE, DELETE, BANNED, NOTIFICATION
 }

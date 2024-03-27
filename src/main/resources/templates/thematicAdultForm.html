@@ -13,7 +13,12 @@
         Thematic Adult Form
 
     </title>
-
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/js/loadPage.js" defer></script>
+    <script src="/js/checkBanUser.js"></script>
+    <link rel="stylesheet" href="/style/thematicChat.css">
     <link rel="stylesheet" href="/style/thematicAdultForm.style.css">
     <link rel="stylesheet" href="/style/styleAll.css">
 </head>
@@ -40,106 +45,21 @@
 
             </div>
 
-            <div class="thematic-select-block">
-
-                <div class="thematic-select">
-
-                    <div class="select-container">
-
-                        <div class="block-start">
-
-                            <p>
-
-                                я
-
-                            </p>
-
-                        </div>
-
-                        <select id="thematic" name="thematic">
-
-                            <option value="не скажу кто ">
-
-                                не скажу кто
-
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                </div>
-
-                <div class="thematic-select">
-
-                    <div class="select-container">
-
-                        <div class="block-start">
-
-                            <p>
-
-                                ищу
-
-                            </p>
-
-                        </div>
-
-                        <select id="thematic" name="thematic">
-
-                            <option value=" не важно кого">
-
-                                не важно кого
-
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="look-interlocutor">
-
-                <button class="look-button" type="submit">
-
-                    <img src="/icons/search.svg" alt="search">
-
-                    <p>
-
-                        Поиск
-
-                    </p>
-
-                </button>
-
-            </div>
 
             <div class="room-topics">
 
                 <div class="block-create">
 
                     <p>
-                        Комната по темам => <a href="#">Создать свою</a>
+                        Комната по темам => <button id="buttonCreateButton">Создать свою</button>
                     </p>
 
                 </div>
 
-                <div class="room-items">
-
-                    <a href="#">мужик 41год</a>
-
-                    <a href="#">девушки 14-15 лет</a>
-
-                    <a href="#">ищу алексея</a>
-
-                    <a href="#">леха 34</a>
-
-                    <a href="#">дядя федор тут?</a>
-
-                    <a href="#">зачем леха посалал катю?</a>
-
+                <div class="room-items" id="room-items">
+                    <button th:each="thematicRoom : ${allThematic18Room}"
+                            th:text="${thematicRoom.getChatName()}"
+                            th:value="${thematicRoom.getChatId()}" onclick="saveRoomUser(this.value,'THEMATIC18')"></button>
                 </div>
 
             </div>
@@ -148,6 +68,21 @@
 
     </div>
 
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Задайте название чата</h2>
+            <form id="chatForm">
+                <input type="text" id="chatName" placeholder="Название чата" required>
+                <p id="not-valid-nameChat" style="font-weight: bold; color: #dfd114;"></p>
+                <button type="submit">Создать комнату</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/thematicForm.js"></script>
+    <script src="/js/thematic18WebSocket.js"></script>
 </body>
 
 </html>

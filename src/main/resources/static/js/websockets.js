@@ -103,10 +103,14 @@ function connect() {
     console.log('----------!! ' + chatId + ' --lollll')
     stompClient.connect({userId, chatId}, function (frame) {
         console.log('Connected: ' + frame);
+        sendNotification('Приєднався новий співрозмовник')
         let currentUserId = localStorage.getItem('uniqueId');
         stompClient.subscribe('/user/'+ localStorage.getItem('chatId') +'/message', function (greeting) {
             onMessageReceived(greeting)
         });
+        // stompClient.subscribe('/user/' + localStorage.getItem('chatId') +'/leave', function (greeting) {
+        //     messageUserLeave()
+        // });
     });
 }
 
@@ -121,6 +125,10 @@ function sendName() {
         messageInput.value = ''
         stompClient.send("/app/chat/" + localStorage.getItem('chatId'), {}, JSON.stringify({'message': message, 'session': localStorage.getItem('uniqueId'), 'action': 'MESSAGE'}) );
     }
+}
+
+function sendNotification(message) {
+    stompClient.send("/app/chat/" + localStorage.getItem('chatId'), {}, JSON.stringify({'message': message, 'session': localStorage.getItem('uniqueId'), 'action': 'NOTIFICATION'}) );
 }
 
 function disconnectChatAll() {
@@ -143,6 +151,13 @@ const onMessageReceived = (payload) => {
     } else if (message.action === 'BANNED') {
         bannedUserInChat(message)
         return;
+    } else if (message.action === 'NOTIFICATION') {
+        pElem.className = 'my-message';
+        pElem.appendChild(document.createTextNode(' ' + message.message));
+        divElem.prepend(pElem);
+        clearInterval(intervalId)
+        intervalId = setInterval(checkRoomActive, 4000)
+        return;
     }
     
     let userName = null;
@@ -162,13 +177,17 @@ const onMessageReceived = (payload) => {
     divElem.prepend(pElem);
 };
 
+function messageUserLeave() {
+    let divElem = document.getElementById('chat-main');
+    let pElem = document.createElement('p');
+    pElem.className = 'my-message';
+    pElem.textContent = 'Поки співрозмовника немає. Ми вас повідомимо як тільки хтось до вас доєднається'
+    divElem.prepend(pElem)
+}
+
 function disabledDisconnectChat(message) {
     let divElem = document.getElementById('chat-main');
     let pElem = document.createElement('p');
-    let emoji = document.getElementById('emojiPicker')
-    let buttonSend = document.getElementById('chat-button');
-    let messageInput = document.getElementById('messageInput');
-    let emojiButton = document.getElementById('emojiButton')
 
     pElem.className = 'my-message';
     if (message.session === localStorage.getItem('uniqueId')){
@@ -176,10 +195,7 @@ function disabledDisconnectChat(message) {
     }else {
         pElem.textContent = 'Співрозмовник вирішив закінчити бесіду'
     }
-    emojiButton.disabled = true
-    emoji.style.display= 'none';
-    buttonSend.disabled = true;
-    messageInput.disabled = true;
+    noActiveButton()
     divElem.prepend(pElem)
     localStorage.setItem('chatId', '');
     // deleteInfoUserServer()
@@ -189,25 +205,33 @@ function disabledDisconnectChat(message) {
 function bannedUserInChat(message) {
     let divElem = document.getElementById('chat-main');
     let pElem = document.createElement('p');
-    let emoji = document.getElementById('emojiPicker')
-    let buttonSend = document.getElementById('chat-button');
-    let messageInput = document.getElementById('messageInput');
-    let emojiButton = document.getElementById('emojiButton')
 
     pElem.className = 'my-message';
     if (message.session === localStorage.getItem('uniqueId')){
-        pElem.textContent = 'Ви заблокували користувача на 30 хвилин'
+        pElem.textContent = 'Ви заблокували користувача на 7 днів'
     }else {
-        pElem.textContent = 'Співрозмовник заблокував вас. Ви не можете спілкуватись 30 хвилин'
+        pElem.textContent = 'Співрозмовник заблокував вас. Ви не можете спілкуватись 7 днів'
     }
-    emojiButton.disabled = true
-    emoji.style.display= 'none';
-    buttonSend.disabled = true;
-    messageInput.disabled = true;
+    noActiveButton()
     divElem.prepend(pElem)
     localStorage.setItem('chatId', '');
     // deleteInfoUserServer()
     disconnect()
+}
+
+function noActiveButton() {
+    let emojiButton = document.getElementById('emojiButton')
+    let emoji = document.getElementById('emojiPicker')
+    let buttonSend = document.getElementById('chat-button');
+    let messageInput = document.getElementById('messageInput');
+    let banBtn = document.getElementById('ban-btn')
+    let exitBtn = document.getElementById('exit-btn')
+    banBtn.disabled
+    exitBtn.disabled
+    emojiButton.disabled = true
+    emoji.style.display= 'none';
+    buttonSend.disabled = true;
+    messageInput.disabled = true;
 }
 
 function disconnect() {

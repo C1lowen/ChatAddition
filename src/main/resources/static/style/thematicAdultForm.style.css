@@ -144,6 +144,41 @@ button {
     margin-top: 10px;
 }
 
+#buttonCreateButton {
+    background-color: #800080; /* Фиолетовый цвет */
+    color: white; /* Белый цвет текста */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px; /* Закругленные углы */
+    cursor: pointer;
+    font-size: 16px; /* Размер шрифта */
+    font-weight: bold; /* Жирный шрифт */
+    transition: background-color 0.3s ease; /* Плавное изменение цвета при наведении */
+}
+
+#buttonCreateButton:hover {
+    background-color: #6a006a; /* Измененный цвет при наведении */
+}
+
+
+.room-items button {
+    border-radius: 10px;
+    border: 1px solid white;
+    background-color: #984646; /* Фиолетовый цвет */
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-left: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Плавное изменение цвета при наведении */
+}
+
+.room-items button:hover {
+    background-color: #112898; /* Темно-фиолетовый цвет при наведении */
+}
+
 @media screen and (max-width: 912px) {
 
     .thematic-select-block{

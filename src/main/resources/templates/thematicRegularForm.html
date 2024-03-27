@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
@@ -13,7 +13,13 @@
         Thematic Form
 
     </title>
-    
+
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/js/loadPage.js" defer></script>
+    <script src="/js/checkBanUser.js"></script>
+    <script src="/jsconfig/banword.js"></script>
     <link rel="stylesheet" href="/style/thematicRegularForm.style.css">
     <link rel="stylesheet" href="/style/styleAll.css">
     <link rel="stylesheet" href="/style/thematicChat.css">
@@ -40,12 +46,9 @@
             </p>
         </div>
         <div class="room-items" id="room-items">
-            <button>мужик 41год</button>
-            <button>девушки 14-15 лет</button>
-            <button>ищу алексея</button>
-            <button>леха 34</button>
-            <button>дядя федор тут?</button>
-            <button>зачем леха посалал катю?</button>
+            <button th:each="thematicRoom : ${allThematicRoom}"
+                    th:text="${thematicRoom.getChatName()}"
+                    th:value="${thematicRoom.getChatId()}" onclick="saveRoomUser(this.value, 'THEMATIC')"></button>
         </div>
     </div>
 </div>
@@ -57,12 +60,15 @@
         <h2>Задайте название чата</h2>
         <form id="chatForm">
             <input type="text" id="chatName" placeholder="Название чата" required>
+            <p id="not-valid-nameChat" style="font-weight: bold; color: #dfd114;"></p>
             <button type="submit">Создать комнату</button>
         </form>
+
     </div>
 </div>
 
    <script src="/js/thematicForm.js"></script>
+    <script src="/js/thematicWebSocket.js"></script>
 
 </body>
 

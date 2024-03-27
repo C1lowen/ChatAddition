@@ -1,6 +1,6 @@
 let intervalId;
 
-function checkRoomActive () {
+function checkRoomActive() {
     let userId = localStorage.getItem('uniqueId');
     let chatId = localStorage.getItem('chatId')
     fetch('/user/active/'+ userId + '/' + chatId, {
@@ -9,25 +9,24 @@ function checkRoomActive () {
             'Content-Type': 'application/json'
         }
     })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(data => {
-            if (data !== 'true') {
-                let divElem = document.getElementById('chat-main');
-                let pElem = document.createElement('p');
-                let emoji = document.getElementById('emojiPicker')
-                let buttonSend = document.getElementById('chat-button');
-                let messageInput = document.getElementById('messageInput');
-                let emojiButton = document.getElementById('emojiButton')
+            let divElem = document.getElementById('chat-main');
+            let pElem = document.createElement('p');
+
+            if(data.active === true && data.isAllUser === false) {
+                pElem.className = 'my-message';
+                pElem.textContent = 'Поки співрозмовника немає. Ми вас повідомимо як тільки хтось до вас доєднається'
+                divElem.prepend(pElem)
+                clearInterval(intervalId)
+                intervalId = setInterval(checkRoomActive, 60000)
+            }else if (data.active === false) {
                 pElem.className = 'my-message';
                 pElem.textContent = 'Співрозмовник вирішив закінчити бесіду'
-                emojiButton.disabled = true
-                emoji.style.display = 'none';
-                buttonSend.disabled = true;
-                messageInput.disabled = true;
+                noActiveButton()
                 divElem.prepend(pElem)
                 localStorage.setItem('chatId', '');
                 disconnect()
-
                 clearInterval(intervalId)
             }
         })
